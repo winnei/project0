@@ -8,6 +8,8 @@ from sklearn.cluster import KMeans
 
 from load_data import load_data
 
+#comment!
+
 #create Class: 
 class GraspClustering:
     

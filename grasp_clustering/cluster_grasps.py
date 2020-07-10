@@ -17,10 +17,12 @@ class GraspClustering:
         #load training_data and train - try diff k, get sum of sq errors, store fitted model 
         print('train!') 
         
-        training_data_path=os.environ['TRAIN_DATA_PATH']
-        training_data=load_data(training_data_path)
+        training_data_path=os.environ['TRAIN_DATA_PATH'] #an environmental variable
+        training_data=load_data(training_data_path) #daya in NUMPY ARRAY format
         
-        k_range=range(1,10)
+        #GOAL: use kmeans and cluster the points.
+        #hyperparameter: no of clusters, k
+        k_range=range(1,10) #initialise possible values of k
         sse=[]      #sum of squared error
         diffls=[0]  #list of differences in squared error
         best_k=1    #best no of clusters
@@ -28,16 +30,16 @@ class GraspClustering:
         for k in k_range:
             cluster=KMeans(n_clusters=k,random_state=5)  #repeat fitting for k range
             cluster.fit(training_data)
-            sse.append(cluster.inertia_)  #inertia gives within cluster sum of squares
+            sse.append(cluster.inertia_)  #inertia gives within cluster sum of squares: measure of error
         #print(sse)
         
         for i in range(len(sse)-1):
-            diff=sse[i]-sse[i+1]
-            diffls.append(diff)
+            diff=sse[i]-sse[i+1] #sse should decrease. diff should be positive
+            diffls.append(diff) #but diff should suddenly decrease
             
         for i in range(len(sse)-1):
             if diffls[i+1]<0.1*(diffls[1]):
-                break;
+                break
             else:
                 best_k+=1
             
